@@ -37,8 +37,7 @@
 
 \newcommand\singlechapter[1]{%if a part only has a single chapter in it use \singlechapter{} otherwise use the normal \chapter{}
 \begin{mtchideinmaintoc}
-\addstarredchapter{#1}
-\chapter*{#1}
+\addchap[{\thepart \ #1}]{#1}
 \end{mtchideinmaintoc}}
 
 \setcounter{tocdepth}{0} % only includes parts and chapters (not sections) in main TOC
