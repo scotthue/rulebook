@@ -1,4 +1,4 @@
-PROJECT='iuf-rulebook'
+PROJECT='usa-rulebook'
 
 SRCDIR='src'
 OUTDIR='out'
@@ -16,7 +16,7 @@ all:
 
 diff:
 	mkdir -p $(OUTDIR)
-	rcs-latexdiff -o $(OUTDIR)/diff.tex --clean src/iuf-rulebook.tex $(OLDCOMMIT) $(NEWCOMMIT)
+	rcs-latexdiff -o $(OUTDIR)/diff.tex --clean src/usa-rulebook.tex $(OLDCOMMIT) $(NEWCOMMIT)
 	TEXDIR=$(SRCDIR); \
 	pdflatex $(LATEXARGS) -draftmode $(OUTDIR)/diff.tex 2>&1 | tee $(OUTDIR)/diff.tex.log && \
 	pdflatex $(LATEXARGS) $(OUTDIR)/diff.tex 2>&1 | tee $(OUTDIR)/diff.tex.log; \
