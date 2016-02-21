@@ -79,31 +79,32 @@
 % Documentation of gitinfo:
 % http://ftp.fernuni-hagen.de/ftp-dir/pub/mirrors/www.ctan.org/macros/latex/contrib/gitinfo/gitinfo.pdf
 %Simple instructions: copy "hooks" directory into ".git" directory
-\usepackage{gitinfo}
+%\usepackage{gitinfo}
 
+\newcommand{\amend}[2]{\section{#2 \\ \small{IUF Section: #1}}}
 \begin{document}
 \begin{titlepage}
 \centering
 \ \\
 
-{\Huge 2014 USA Competition Rulebook}
+{\Huge 2016 USA Competition Rulebook}
 \vspace{5mm}
 
 \includegraphics{usa-logo}
 
 \vspace{5mm}
-{\Large Compiled from the 2013 IUF Competition Rulebook\\ }
+{\Large Compiled from the 2015 IUF Rulebook\\ }
 \vspace{3mm}
 {\Large by the Unicycling Society of America}
 
 \vspace{8mm}
-{\Large Final Version \quad January, 2014}
+{\Large Draft Version \quad Febuary, 2016}
 
 \vspace{40mm}
 Prepared by the IUF and USA Rulebook Committees.
 
 \vspace{5mm}
-{\small Copyright \copyright\ 2014 by the International Unicycling Federation, Inc.\ and the Unicycling Society of America, Inc. All rights reserved.}
+{\small Copyright \copyright\ 2016 by the International Unicycling Federation, Inc.\ and the Unicycling Society of America, Inc. All rights reserved.}
 
 
 \end{titlepage}
@@ -112,17 +113,9 @@ Prepared by the IUF and USA Rulebook Committees.
 \tableofcontents
 
 \mainmatter
+\include{preface}
 \include{01_general}
-\include{02_track_field}
-\include{03_road_racing}
-\include{04_muni}
-\include{05_freestyle}
-\include{06_flatland_street}
-\include{07_trials}
-\include{08_hockey}
-\include{09_basketball}
-\include{10_skill_levels}
+\include{amendments}
 \backmatter
-%\include{credits}
 
 \end{document} % Have to typset (ctrl-t) twice (or three times) to get everything to work
