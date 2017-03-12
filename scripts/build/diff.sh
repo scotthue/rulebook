@@ -7,7 +7,7 @@ CHAPTERDIR=src/chapters
 SHORTCHAPTERDIR=${CHAPTERDIR##src/} # remove src/ from the start of CHAPTERDIR
 CHAPTERS=$(ls $CHAPTERDIR | grep ".*\.tex$")
 
-EXCLUDE_TEXTCMDS="part,chapter,section,subsection,subsubsection" # for latexdiff
+EXCLUDE_TEXTCMDS="part,chapter" # for latexdiff
 
 function clean_up {
   # Perform program exit housekeeping
