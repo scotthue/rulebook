@@ -7,7 +7,7 @@ CHAPTERDIR=src/chapters
 SHORTCHAPTERDIR=${CHAPTERDIR##src/} # remove src/ from the start of CHAPTERDIR
 CHAPTERS=$(ls $CHAPTERDIR | grep ".*\.tex$")
 
-EXCLUDE_TEXTCMDS="part,chapter,section,subsection,subsubsection,iftoggle,comment2016" # for latexdiff
+EXCLUDE_TEXTCMDS="part,chapter,section,subsection,subsubsection" # for latexdiff
 
 function clean_up {
   # Perform program exit housekeeping
@@ -104,11 +104,6 @@ rsync -a  src/ tmp/src_original # copy original source before starting changes
 
 verbose_cmd echo "Starting find and replace changes for diff..."
 
-# replace iftoggles that have a true and a false option with only the true option
-sed -i.bak 's~^[[:blank:]]*\\iftoggle{[[:alnum:]_][[:alnum:]_]*}{\\input{\([[:alnum:]_\/][[:alnum:]_\/]*\)}}{\\input{\([[:alnum:]_\/][[:alnum:]_\/]*\)}}~\\input{\1}~' $CHAPTERDIR/*.tex
-#replace iftoggles that only have a true option
-sed -i.bak 's~^[[:blank:]]*\\iftoggle{[[:alnum:]_][[:alnum:]_]*}{\\input{\([[:alnum:]_\/][[:alnum:]_\/]*\)}}{}~\\input{\1}~' $CHAPTERDIR/*.tex
-
 #TODO: hockey img
 
 # the -i.bak is required so SED works on both OSX and Linux (BSD and GNU sed)
@@ -121,8 +116,8 @@ verbose_cmd echo "Done"
 for CHAPTER in $CHAPTERS; do
     verbose_cmd echo "Diffing on chapter file: $CHAPTER"
     SLUG=$(echo $CHAPTER | cut -f 1 -d '.')
-    verbose_cmd latexdiff-vc --git --so --flatten  --force -r $DIFFBRANCH $CHAPTERDIR/$CHAPTER
-    # --exclude-textcmd=$EXCLUDE_TEXTCMDS
+    verbose_cmd latexdiff-vc --git --so  --force --exclude-textcmd=$EXCLUDE_TEXTCMDS -r $DIFFBRANCH $CHAPTERDIR/$CHAPTER
+    #
     verbose_cmd mv -v $CHAPTERDIR/$SLUG-diff$DIFFBRANCH.tex tmp/src_diff_$DIFFBRANCH/$SHORTCHAPTERDIR/$SLUG.tex
 done
 # TODO: remember to do something about toggle include for std skills
