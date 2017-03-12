@@ -1,0 +1,157 @@
+\documentclass[a4paper,oneside,parskip=half,numbers=noenddot]{scrbook}
+
+
+%%% Page Layout %%%
+\textwidth=14.7cm % these two commands make the page fit in a box
+\textheight=22.1cm % ... that works on both letter and A4 paper
+%\hoffset=5.8754pt % enable if using letterpaper to center document on page
+
+
+%%% Basic Setup %%%
+\pdfminorversion=7 % use a more current pdf version to support better graphics inclusions
+
+
+%%% Language support %%%
+\usepackage[utf8]{inputenc} % use utf-8 encoding for better language support
+\usepackage[T1]{fontenc} % uses 8-bit font encoding for better character support
+\usepackage{lmodern} % use lmodern font for better character support and a prettier font
+
+%%% Additional Simple Packages %%%
+\usepackage{color} % for latexdiff
+\usepackage[normalem]{ulem} % for latexdiff
+\usepackage{import} % allows for better nested imports (using the subimport command)
+
+
+%%% Graphics Packages %%%
+\usepackage{graphicx}
+\graphicspath{{img/}{./img/}{src/img/}}
+\usepackage{wrapfig}
+\usepackage{pict2e}
+
+
+%%% User defined commands and associated packages %%%
+\usepackage{comment}
+\excludecomment{comment2016}
+
+\newcommand{\unit}[1]{\ensuremath{\, \mathrm{#1}}} % use \unit{km} in math mode for better units
+
+
+%%% GitInfo %%%
+\usepackage{gitinfo2}
+% gitinfo2 package can be found in the dependencies directory
+% git hooks must also be installed and these are found in the scripts directory
+
+
+%%% Tabular environment changes and packages %%%
+\usepackage{array} % basic table package, "a must use"
+\usepackage{longtable}
+\usepackage{multicol}
+\usepackage{multirow}
+
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}} % use column type 'P' instead of 'p' for non-justified paragraph text in a table - used primarily in the freestyle judging sections
+
+
+%%% Additional basic custimizations %%%
+\renewcommand{\thepart}{\arabic{part}} % arabic part numbering
+\renewcommand{\thechapter}{\arabic{part}\Alph{chapter}} % make chapters numbered with part and then letter
+%\renewcommand{\thesection}{\arabic{part}.\arabic{section}} % replace chapter number with part number in sections %% used prior to reorg
+
+\setcounter{secnumdepth}{3} % makes subsubsections numbered
+
+\usepackage[shortlabels]{enumitem} % allows list customization here below
+\setlist{itemsep=-1mm, topsep=-1pt, partopsep=0pt} % customize spacing around lists
+
+\newlist{judging_items}{itemize}{1} %redefine itemize for the freestyle judging grid to fit
+\setlist[judging_items]{label=\textbullet,leftmargin=*, labelsep=0.7mm,itemsep=-1mm, topsep=-6pt, partopsep=-5pt}
+
+
+\RedeclareSectionCommands[
+  beforeskip=-\baselineskip,
+  afterskip=.5\baselineskip]{section,subsection,subsubsection}
+% this command is supposed to replace titlesec's titlespacing option
+% the desired before/after spacing was {12pt plus 4pt minus 2pt}{0pt plus 2pt minus 2pt}
+
+
+
+
+%%% Customize Part/Chapter/Section/Page numbering %%%
+\usepackage{remreset} % allows the resets here below
+\makeatletter
+\@addtoreset{chapter}{part} % reset chapter numbering for each part
+\@addtoreset{section}{part} % reset section numbering for each part
+%\@removefromreset{section}{chapter} % don't reset section numbering in new chapters
+\makeatother
+
+%don't reset page numbers ever (specifically not after frontmatter)
+\makeatletter
+\def\pagenumbering#1{%
+  \gdef\thepage{\csname @#1\endcsname \c@page}}
+\makeatother
+
+%Add singlechapter for the USA rulebook
+\newcommand\singlechapter[1]{%if a part only has a single chapter in it use \singlechapter{} otherwise use the normal \chapter{}
+\begin{mtchideinmaintoc}
+\addchap[{\thepart \ #1}]{#1}
+\end{mtchideinmaintoc}}
+
+% USA amend command
+\newcommand{\amend}[2]{\section{#2}\vspace{-5mm}{{\large \textbf{Replaces IUF Section: #1}} \vspace {6mm}}\ \\}
+
+
+%%% Headings %%%
+\usepackage[markcase=ignoreuppercase,autooneside]{scrlayer-scrpage} %better headings without uppercase TOC heading
+\pagestyle{scrheadings}
+\clearscrheadfoot %clear all header and footer styles to allow custimization
+\cfoot[\pagemark]{\pagemark} %pagenumbers in footer
+\makeatletter
+\let\Oldpart\part
+\newcommand{\parttitle}{}
+\renewcommand{\part}[1]{\Oldpart{#1}\renewcommand{\parttitle}{#1}}
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+\renewcommand*{\chapterpagestyle}{headings} %display headers on first page of chapters
+
+\chead[]{
+  \ifnum\value{chapter}>0
+    \thepart \ \parttitle -- \leftmark
+  \else
+    \thepart \ \parttitle
+  \fi
+  }
+\makeatother
+
+
+%%% TOC custimization %%%
+\usepackage[tight,k-tight]{minitoc} % for table of contents per part
+%% all of this comes after minitoc is loaded %%
+\setcounter{tocdepth}{0} % only includes parts and chapters (not sections) in main TOC
+\mtcsetdepth{parttoc}{1} % only includes chapters and sections (not subsections) in part TOCs
+
+\usepackage[tocindentauto]{tocstyle} % prettier TOC
+\usetocstyle{allwithdot} %use 'KOMAlike" if you don't want dots
+\settocstylefeature [-1] {entryvskip} {15pt}
+\settocstylefeature [0] {entryvskip} {10pt}
+\settocstylefeature [0] {entryhook} {\hspace{18pt} }
+
+\renewcommand{\mtcgapbeforeheads}{0pt}
+\renewcommand{\mtcgapafterheads}{0pt}
+\mtcsettitle{parttoc}{Contents} %renames the part TOC to match main TOC
+
+\usepackage{tocloft} % package for below command
+\renewcommand{\cftchapnumwidth}{1.8em} %changes spacing between number and name on chapters in TOC (and minitocs) to help with long chapers numbers
+\renewcommand{\cftsecnumwidth}{3em} %changes spacing between number and name on sections in TOC (and minitocs) to help with long section numbers (i.e. 1C.14)
+
+
+%%% Hyperref %%%
+% must be loaded as late as possible in preamble, with a few things after
+\usepackage[hypertexnames=false]{hyperref} % clickable table of contents, index in pdf files, the package option hypertexnames=false is required because we reset chapter counts for every part
+\hypersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black
+}
+
+
+%%% Must be loaded after hyperref %%%
+\usepackage[numbered]{bookmark} % customize PDF bookmarks
